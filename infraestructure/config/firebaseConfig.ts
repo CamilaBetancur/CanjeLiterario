@@ -1,5 +1,6 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from "firebase/auth";
 import Constants from "expo-constants";
 
 if (!Constants.expoConfig?.extra?.apiKey) {
@@ -14,5 +15,10 @@ const firebaseConfig = {
   appId: Constants.expoConfig?.extra.appId,
 };
 
-const app = initializeApp(firebaseConfig);
+//patrón singleton
+const app: FirebaseApp = getApps().length === 0
+  ? initializeApp(firebaseConfig)
+  : getApp();
+
 export const firestore = getFirestore(app);
+export const auth = getAuth(app);
